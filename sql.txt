@@ -1,0 +1,2 @@
+
+INSERT INTO roles(CODE, NAME) VALUES ('USER','User'), ('ADMIN', 'Admin'), ('SUPER_ADMIN','sp ad')
