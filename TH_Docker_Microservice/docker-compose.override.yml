@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./api-gateway/src:/app/src
+      - /app/node_modules    # Ghi đè node_modules trong container bằng thư mục trống
+    ports:
+      - "3000:3000"
+
+  product-service:
+    build:
+      context: ./product-service
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./product-service/src:/app/src
+      - /app/node_modules    # Ghi đè node_modules trong container bằng thư mục trống
+    ports:
+      - "3006:3006"

@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  # MongoDB
+  mongodb:
+    image: mongo:6
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: secret
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - app-network
+
+  # RabbitMQ (nếu bạn dùng message-broker kiểu AMQP)
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"     # AMQP
+      - "15672:15672"   # Web UI
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - app-network
+
+  # API Gateway
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "3000:3000"
+    depends_on:
+      - authenticate-service
+      - comment-service
+      - post-service
+      - user-service
+    networks:
+      - app-network
+
+  # product Service
+  product-service:
+    build: ./product-service
+    ports:
+      - "3006:3006"
+    environment:
+      MONGO_URI: mongodb://admin:secret@mongodb:27017/userdb?authSource=admin
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+
+volumes:
+  mongo_data:
+
+networks:
+  app-network:
