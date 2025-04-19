@@ -12,7 +12,7 @@ app.use(express.json()); // Middleware xử lý JSON
 app.get("/ping", (req, res) => {
 	res.json({
 		errorCode: 200,
-		errorMessage: "Pong",
+		errorMessage: "Pong!",
 		data: null,
 	});
 });

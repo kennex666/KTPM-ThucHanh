@@ -20,3 +20,14 @@ services:
       - /app/node_modules    # Ghi đè node_modules trong container bằng thư mục trống
     ports:
       - "3006:3006"
+      
+      
+  order-service:
+    build:
+      context: ./order-service
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./order-service/src:/app/src
+      - /app/node_modules    # Ghi đè node_modules trong container bằng thư mục trống
+    ports:
+      - "3007:3007"
