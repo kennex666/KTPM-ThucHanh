@@ -8,6 +8,7 @@ const router = express.Router();
 router.post("/", (req: any, res: any) => {
     const { name, price, description, inStock } = req.body;
     if (!name || !price || !description || !inStock) {
+        console.log("Missing required fields", req.body);
         return res.status(400).json({
             errorCode: 400,
             errorMessage: "Missing required fields",
