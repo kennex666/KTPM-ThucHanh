@@ -50,27 +50,12 @@ router.post("/", (req: any, res: any) => {
     }
 });
 
-router.get("/", (req: any, res: any) => {
-    productService.getAllProducts().then((products: IProduct[]) => {
-        return res.status(200).json({
-            errorCode: 200,
-            errorMessage: "Get all products successfully",
-            data: products,
-        });
-    }).catch((error: any) => {
-        return res.status(500).json({
-            errorCode: 500,
-            errorMessage: "Internal server error",
-            data: null,
-        });
-    });
-});
 
 // :id
 router.get("/:id", (req: any, res: any) => {
     productService.getProductById(req.params.id).then((product: IProduct | null) => {
         if (!product) {
-            return res.status(200).json({
+            return res.status(404).json({
                 errorCode: 404,
                 errorMessage: "Product not found",
                 data: null,
@@ -83,13 +68,30 @@ router.get("/:id", (req: any, res: any) => {
         });
     }
     ).catch((error: any) => {
-        return res.status(200).json({
-            errorCode: 200,
-            errorMessage: "Internal server error",
-            data: null,
-        });
+        return res.status(500).json({
+			errorCode: 500,
+			errorMessage: "Internal server error",
+			data: null,
+		});
     });
 })
+
+
+router.get("/", (req: any, res: any) => {
+    productService.getAllProducts().then((products: IProduct[]) => {
+        return res.status(200).json({
+            errorCode: 200,
+            errorMessage: "Get all products successfully",
+            data: products,
+        });
+    }).catch((error: any) => {
+        return res.status(500).json({
+			errorCode: 500,
+			errorMessage: "Internal server error",
+			data: null,
+		});
+    });
+});
 
 // update id
 router.put("/:id", (req: any, res: any) => {
